@@ -2,6 +2,9 @@ using System.Diagnostics;
 using BlogEngine.Data.Models;
 using BlogEngine.Server.Components;
 using BlogEngine.Server.Components.Auth;
+using BlogEngine.Server.Components.Emails;
+using BlogEngine.Shared.DTOs;
+using FluentValidation;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -76,12 +79,12 @@ try
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")).EnableSensitiveDataLogging());
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-    // builder.Services.AddSingleton<IEnhancedEmailSender<User>, IdentityNoOpEmailSender>();
+    builder.Services.AddSingleton<IEnhancedEmailSender<User>, IdentityNoOpEmailSender>();
     // End application stuff
     
     // Add FluentValidation stuff
-    // builder.Services.AddTransient<IValidator<RegisterDto>, RegisterDtoValidator>();
-    // builder.Services.AddTransient<IValidator<LoginDto>, LoginDtoValidator>();
+    builder.Services.AddTransient<IValidator<RegisterDto>, RegisterDtoValidator>();
+    builder.Services.AddTransient<IValidator<LoginDto>, LoginDtoValidator>();
     // End FluentValidation stuff
     
     var app = builder.Build();
@@ -108,7 +111,7 @@ try
         .AddInteractiveWebAssemblyRenderMode()
         .AddAdditionalAssemblies(typeof(BlogEngine.Client._Imports).Assembly);
 
-    // app.MapAdditionalIdentityEndpoints();
+    app.MapAdditionalIdentityEndpoints();
 
     if (!isMigrations)
     {
