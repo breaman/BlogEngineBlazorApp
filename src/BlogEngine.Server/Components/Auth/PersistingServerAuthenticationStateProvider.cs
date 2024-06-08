@@ -13,8 +13,8 @@ namespace BlogEngine.Server.Components.Auth;
 // authentication state to the client which is then fixed for the lifetime of the WebAssembly application.
 internal sealed class PersistingServerAuthenticationStateProvider : ServerAuthenticationStateProvider, IDisposable
 {
-    private readonly PersistentComponentState _state;
     private readonly IdentityOptions _options;
+    private readonly PersistentComponentState _state;
 
     private readonly PersistingComponentStateSubscription _subscription;
 
@@ -31,6 +31,12 @@ internal sealed class PersistingServerAuthenticationStateProvider : ServerAuthen
         _subscription = _state.RegisterOnPersisting(OnPersistingAsync, RenderMode.InteractiveWebAssembly);
     }
 
+    public void Dispose()
+    {
+        _subscription.Dispose();
+        AuthenticationStateChanged -= OnAuthenticationStateChanged;
+    }
+
     private void OnAuthenticationStateChanged(Task<AuthenticationState> task)
     {
         _authenticationStateTask = task;
@@ -39,9 +45,7 @@ internal sealed class PersistingServerAuthenticationStateProvider : ServerAuthen
     private async Task OnPersistingAsync()
     {
         if (_authenticationStateTask is null)
-        {
             throw new UnreachableException($"Authentication state not set in {nameof(OnPersistingAsync)}().");
-        }
 
         var authenticationState = await _authenticationStateTask;
         var principal = authenticationState.User;
@@ -52,19 +56,11 @@ internal sealed class PersistingServerAuthenticationStateProvider : ServerAuthen
             var email = principal.FindFirst(_options.ClaimsIdentity.EmailClaimType)?.Value;
 
             if (userId != null && email != null)
-            {
                 _state.PersistAsJson(nameof(UserInfo), new UserInfo
                 {
                     UserId = userId,
-                    Email = email,
+                    Email = email
                 });
-            }
         }
-    }
-
-    public void Dispose()
-    {
-        _subscription.Dispose();
-        AuthenticationStateChanged -= OnAuthenticationStateChanged;
     }
 }

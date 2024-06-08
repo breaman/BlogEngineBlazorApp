@@ -5,5 +5,4 @@ namespace BlogEngine.Data.Models;
 
 public class Role : IdentityRole<int>, IEntityBase
 {
-    
 }

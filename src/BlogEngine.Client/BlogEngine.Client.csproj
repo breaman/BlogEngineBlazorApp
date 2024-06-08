@@ -1,15 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
-  <PropertyGroup>
-    <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
-    <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
-  </PropertyGroup>
-  <ItemGroup>
-        <PackageReference Include="Blazored.FluentValidation" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
+    <PropertyGroup>
+        <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
+        <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Blazored.FluentValidation"/>
+        <PackageReference Include="Blazored.Toast"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly"/>
     </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BlogEngine.Shared\BlogEngine.Shared.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\BlogEngine.Shared\BlogEngine.Shared.csproj"/>
+    </ItemGroup>
 
 </Project>

@@ -1,0 +1,30 @@
+@using Microsoft.AspNetCore.Components.Authorization
+<nav>
+    <div class="mx-4 uppercase text-slate-500 my-2 font-bold">
+        <div class="hidden md:block w-full" id="navbar-default">
+            <NavLink href="/">Home</NavLink>
+            <NavLink href="/blog" class="ml-4">Blog</NavLink>
+            <AuthorizeView>
+                <Authorized>
+                    @* <NavLink class="ml-4" href="/transactions">My Transactions</NavLink> *@
+                    <AuthorizeView Roles="@SharedConstants.Admin" Context="adminContext">
+                        <Authorized>
+                            <NavLink class="ml-4" href="/admin">Admin</NavLink>
+                        </Authorized>
+                    </AuthorizeView>
+                    <form action="/Account/Logout" method="post" class="inline ml-4">
+                        <AntiforgeryToken/>
+                        <input type="hidden" name="ReturnUrl" value="@_currentUrl"/>
+                        <button type="submit" class="uppercase">
+                            Log Off
+                        </button>
+                    </form>
+                </Authorized>
+                <NotAuthorized>
+                    @* <NavLink href="/account/register">Register</NavLink> *@
+                    @* <NavLink class="ml-4" href="/account/login">Log in</NavLink> *@
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+    </div>
+</nav>

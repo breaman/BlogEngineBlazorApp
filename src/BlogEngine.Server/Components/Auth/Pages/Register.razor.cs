@@ -13,31 +13,24 @@ namespace BlogEngine.Server.Components.Auth.Pages;
 
 public partial class Register : ComponentBase
 {
-    private List<IdentityError>? _identityErrors = new();
     private FluentValidationValidator _fluentValidationValidator;
+    private List<IdentityError>? _identityErrors = new();
 
-    [SupplyParameterFromForm] private RegisterDto Dto { get; set; } = new();
-    
-    [SupplyParameterFromQuery]
-    private string? ReturnUrl { get; set; }
-    
-    [Inject]
-    protected UserManager<User>? UserManager { get; set; }
-    
-    [Inject]
-    protected SignInManager<User>? SignInManager { get; set; }
-    
-    [Inject]
-    protected ILogger<Register> Logger { get; set; }
-    
-    [Inject]
-    protected NavigationManager NavigationManager { get; set; }
-    
-    [Inject]
-    protected IEnhancedEmailSender<User> EmailSender { get; set; }
-    
-    [Inject]
-    internal IdentityRedirectManager RedirectManager { get; set; }
+    [SupplyParameterFromForm] private RegisterDto Dto { get; } = new();
+
+    [SupplyParameterFromQuery] private string? ReturnUrl { get; }
+
+    [Inject] protected UserManager<User>? UserManager { get; set; }
+
+    [Inject] protected SignInManager<User>? SignInManager { get; set; }
+
+    [Inject] protected ILogger<Register> Logger { get; set; }
+
+    [Inject] protected NavigationManager NavigationManager { get; set; }
+
+    [Inject] protected IEnhancedEmailSender<User> EmailSender { get; set; }
+
+    [Inject] internal IdentityRedirectManager RedirectManager { get; set; }
 
     private string? Message => _identityErrors is null
         ? null
@@ -45,10 +38,10 @@ public partial class Register : ComponentBase
 
     private async Task RegisterUser()
     {
-        _identityErrors = new();
+        _identityErrors = new List<IdentityError>();
         if (await _fluentValidationValidator.ValidateAsync())
         {
-            var user = new User()
+            var user = new User
             {
                 FirstName = Dto.FirstName,
                 LastName = Dto.LastName,
@@ -66,7 +59,7 @@ public partial class Register : ComponentBase
             }
 
             Logger.LogInformation("User created a new account with password.");
-            
+
             await UserManager.AddToRoleAsync(user, SharedConstants.User);
 
             var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
@@ -78,12 +71,10 @@ public partial class Register : ComponentBase
             await EmailSender.SendConfirmationLinkAsync(user, user.Email, HtmlEncoder.Default.Encode(callbackUrl));
 
             if (UserManager.Options.SignIn.RequireConfirmedEmail)
-            {
                 RedirectManager.RedirectTo("Account/RegistrationConfirmation",
-                    new() { ["email"] = Dto.Email, ["returnUrl"] = ReturnUrl });
-            }
+                    new Dictionary<string, object?> { ["email"] = Dto.Email, ["returnUrl"] = ReturnUrl });
 
-            await SignInManager.SignInAsync(user, isPersistent: false);
+            await SignInManager.SignInAsync(user, false);
             RedirectManager.RedirectTo(ReturnUrl);
         }
     }
