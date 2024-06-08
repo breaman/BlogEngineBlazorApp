@@ -2,7 +2,8 @@
 <nav>
     <div class="mx-4 uppercase text-slate-500 my-2 font-bold">
         <div class="hidden md:block w-full" id="navbar-default">
-            <NavLink href="/blog">Blog</NavLink>
+            <NavLink href="/">Home</NavLink>
+            <NavLink href="/blog" class="ml-4">Blog</NavLink>
             <AuthorizeView>
                 <Authorized>
                     @* <NavLink class="ml-4" href="/transactions">My Transactions</NavLink> *@
@@ -21,7 +22,7 @@
                 </Authorized>
                 <NotAuthorized>
                     @* <NavLink href="/account/register">Register</NavLink> *@
-                    <NavLink class="ml-4" href="/account/login">Log in</NavLink>
+                    @* <NavLink class="ml-4" href="/account/login">Log in</NavLink> *@
                 </NotAuthorized>
             </AuthorizeView>
         </div>

@@ -1,3 +1,8 @@
 @page "/blog"
 
 <p>Here is where all our posts will go</p>
+
+@foreach (var post in _posts)
+{
+    <div>@post.Title</div>
+}

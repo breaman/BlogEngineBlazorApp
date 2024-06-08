@@ -11,27 +11,21 @@ public partial class ConfirmEmail : ComponentBase
 {
     private string? statusMessage;
 
-    [CascadingParameter]
-    private HttpContext HttpContext { get; set; } = default!;
+    [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
 
-    [SupplyParameterFromQuery]
-    private string? Email { get; set; }
+    [SupplyParameterFromQuery] private string? Email { get; }
 
-    [SupplyParameterFromQuery]
-    private string? Code { get; set; }
-    
+    [SupplyParameterFromQuery] private string? Code { get; }
+
     [Inject] private IdentityRedirectManager RedirectManager { get; set; }
     [Inject] private UserManager<User> UserManager { get; set; }
     [Inject] private ILogger<ConfirmEmail> Logger { get; set; }
     [Inject] private NavigationManager NavigationManager { get; set; }
     [Inject] private IEnhancedEmailSender<User> EmailSender { get; set; }
-    
+
     protected override async Task OnInitializedAsync()
     {
-        if (Email is null || Code is null)
-        {
-            RedirectManager.RedirectTo("");
-        }
+        if (Email is null || Code is null) RedirectManager.RedirectTo("");
 
         var user = await UserManager.FindByEmailAsync(Email);
         if (user is null)
@@ -56,16 +50,15 @@ public partial class ConfirmEmail : ComponentBase
                 }
                 else
                 {
-                    
                     await EmailSender.SendCongratulationsEmail(user, Email);
                     RedirectManager.RedirectTo("/");
                 }
-                
             }
             else
             {
                 Logger.LogError("Unable to activate {Email} with response of {Error}", Email, result.Errors);
-                statusMessage = "Your account cannot be activated since the user cannot be found. Please try to create your account again.";
+                statusMessage =
+                    "Your account cannot be activated since the user cannot be found. Please try to create your account again.";
             }
         }
     }

@@ -9,18 +9,15 @@ namespace BlogEngine.Server.Components.Auth.Pages;
 
 public partial class Login : ComponentBase
 {
-    private string? errorMessage;
     private FluentValidationValidator _fluentValidationValidator;
+    private string? errorMessage;
 
-    [CascadingParameter]
-    private HttpContext HttpContext { get; set; } = default!;
+    [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
 
-    [SupplyParameterFromForm]
-    private LoginDto Dto { get; set; } = new();
+    [SupplyParameterFromForm] private LoginDto Dto { get; set; } = new();
 
-    [SupplyParameterFromQuery]
-    private string? ReturnUrl { get; set; }
-    
+    [SupplyParameterFromQuery] private string? ReturnUrl { get; set; }
+
     [Inject] private ILogger<Login> Logger { get; set; }
     [Inject] private UserManager<User> UserManager { get; set; }
     [Inject] private SignInManager<User> SignInManager { get; set; }
@@ -36,7 +33,7 @@ public partial class Login : ComponentBase
 
             if (user != null)
             {
-                if (!(await UserManager.IsEmailConfirmedAsync(user)))
+                if (!await UserManager.IsEmailConfirmedAsync(user))
                 {
                     errorMessage = "Your account has not been activated yet. Please activate your account first.";
                 }

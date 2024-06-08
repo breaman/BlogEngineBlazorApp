@@ -8,15 +8,18 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, int>
 {
     private readonly IUserService? _userService;
 
-    public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
-
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-    { }
+    {
+    }
 
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IUserService userService) : base(options)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IUserService userService) :
+        base(options)
     {
         _userService = userService;
     }
+
+    public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+    public DbSet<Post> Posts => Set<Post>();
 
     public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
         CancellationToken cancellationToken = default)
@@ -40,7 +43,6 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, int>
         var now = DateTime.UtcNow;
 
         foreach (var entry in added)
-        {
             if (entry.Entity is FingerPrintEntityBase fingerPrintEntry)
             {
                 fingerPrintEntry.CreatedBy = _userService?.UserId ?? default;
@@ -48,16 +50,13 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, int>
                 fingerPrintEntry.ModifiedBy = _userService?.UserId ?? default;
                 fingerPrintEntry.ModifiedOn = now;
             }
-        }
 
         foreach (var entry in modified)
-        {
             if (entry.Entity is FingerPrintEntityBase fingerPrintEntry)
             {
                 fingerPrintEntry.ModifiedBy = _userService?.UserId ?? default;
                 fingerPrintEntry.ModifiedOn = now;
             }
-        }
     }
 
     private void AddLogging()
@@ -66,10 +65,8 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, int>
         var auditEntries = new List<AuditEntry>();
         foreach (var entry in ChangeTracker.Entries())
         {
-            if (entry.Entity is AuditLog || entry.State == EntityState.Detached || entry.State == EntityState.Unchanged)
-            {
-                continue;
-            }
+            if (entry.Entity is AuditLog || entry.State == EntityState.Detached ||
+                entry.State == EntityState.Unchanged) continue;
 
             var auditEntry = new AuditEntry(entry)
             {
@@ -80,10 +77,7 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, int>
             foreach (var property in entry.Properties)
             {
                 var propertyName = property.Metadata.Name;
-                if (property.Metadata.IsPrimaryKey())
-                {
-                    auditEntry.KeyValues[propertyName] = property.CurrentValue!;
-                }
+                if (property.Metadata.IsPrimaryKey()) auditEntry.KeyValues[propertyName] = property.CurrentValue!;
                 switch (entry.State)
                 {
                     case EntityState.Added:
@@ -102,6 +96,7 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, int>
                             auditEntry.OldValues[propertyName] = property.OriginalValue!;
                             auditEntry.NewValues[propertyName] = property.CurrentValue!;
                         }
+
                         break;
                     case EntityState.Detached:
                         break;
@@ -112,9 +107,7 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, int>
                 }
             }
         }
-        foreach (var auditEntry in auditEntries)
-        {
-            AuditLogs.Add(auditEntry.ToAuditLog());
-        }
+
+        foreach (var auditEntry in auditEntries) AuditLogs.Add(auditEntry.ToAuditLog());
     }
 }

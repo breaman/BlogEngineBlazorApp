@@ -6,7 +6,7 @@ namespace BlogEngine.Server.Components.Layout;
 public partial class NavMenu : ComponentBase
 {
     private string? _currentUrl;
-    
+
     [Inject] private NavigationManager NavigationManager { get; set; }
 
     protected override void OnInitialized()

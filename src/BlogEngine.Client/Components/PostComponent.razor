@@ -1,0 +1,44 @@
+<div>
+    @if (Post is null)
+    {
+        <p>Loading...</p>
+    }
+    else
+    {
+        <EditForm EditContext="_postContext" FormName="postComponent">
+            <div>
+                <div class="inputWrapper">
+                    <InputText Value="@Post.Title" ValueExpression="() => Post.Title" ValueChanged="@((string? title) => UpdateSlug(title))" class="peer inputField" id="title" placeholder=" "/>
+                    <label for="title" class="inputLabel">Title</label>
+                </div>
+            </div>
+            <div class="flex">
+                <div class="inputWrapper flex">
+                    <InputText @bind-Value="Post.Slug" class="peer inputField" id="slug" placeholder=" "/>
+                    <label for="slug" class="inputLabel">Slug</label>
+                </div>
+                <div class="flex">
+                    <button type="button" class="text-nowrap" @onclick="ReplaceSlug">Replace Slug</button>
+                </div>
+            </div>
+            <div>
+                <div class="inputWrapper">
+                    <InputDate @bind-Value="Post.PostedOn" class="peer inputField" id="postedOn" placeholder=" "/>
+                    <label for="postedOn" class="inputLabel">Posted On</label>
+                </div>
+            </div>
+            <div>
+                <div class="inputWrapper">
+                    <InputTextArea @bind-Value="Post.Content" class="peer inputField" id="content" placeholder=" "/>
+                    <label for="content" class="inputLabel">Content</label>
+                </div>
+            </div>
+            <div>
+                <div class="inputWrapper">
+                    <InputCheckbox @bind-Value="Post.IsPublished" id="published" placeholder=" "/>
+                    <label for="published">Is Published</label>
+                </div>
+            </div>
+        </EditForm>
+    }
+</div>

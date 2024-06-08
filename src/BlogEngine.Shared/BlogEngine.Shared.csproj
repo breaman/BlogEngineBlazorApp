@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <ItemGroup>
-    <PackageReference Include="FluentValidation" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="FluentValidation"/>
+    </ItemGroup>
 
 </Project>

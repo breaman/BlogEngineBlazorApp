@@ -11,15 +11,12 @@ public partial class RegistrationConfirmation : ComponentBase
 {
     private string? emailConfirmationLink;
 
-    [CascadingParameter]
-    private HttpContext HttpContext { get; set; } = default!;
+    [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
 
-    [SupplyParameterFromQuery]
-    private string? Email { get; set; }
+    [SupplyParameterFromQuery] private string? Email { get; }
 
-    [SupplyParameterFromQuery]
-    private string? ReturnUrl { get; set; }
-    
+    [SupplyParameterFromQuery] private string? ReturnUrl { get; }
+
     [Inject] private IdentityRedirectManager RedirectManager { get; set; }
     [Inject] private UserManager<User> UserManager { get; set; }
     [Inject] private ILogger<RegistrationConfirmation> Logger { get; set; }
@@ -28,10 +25,7 @@ public partial class RegistrationConfirmation : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        if (Email is null)
-        {
-            RedirectManager.RedirectTo("");
-        }
+        if (Email is null) RedirectManager.RedirectTo("");
 
         var user = await UserManager.FindByEmailAsync(Email);
         if (user is null)
