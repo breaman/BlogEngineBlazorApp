@@ -39,14 +39,26 @@ public partial class Register : ComponentBase
     private async Task RegisterUser()
     {
         _identityErrors = new List<IdentityError>();
+        
+        if (Dto.Email?.Trim() != "mike@stokesbary.me")
+        {
+            Logger.LogError("User is not in the approved list of users");
+            _identityErrors.Add(new IdentityError()
+            {
+                Description = "User is not in the approved list of users.",
+                Code = "INVALID_USER"
+            });
+            return;
+        }
+        
         if (await _fluentValidationValidator.ValidateAsync())
         {
             var user = new User
             {
-                FirstName = Dto.FirstName,
-                LastName = Dto.LastName,
-                Email = Dto.Email,
-                UserName = Dto.Email,
+                FirstName = Dto.FirstName?.Trim(),
+                LastName = Dto.LastName?.Trim(),
+                Email = Dto.Email?.Trim(),
+                UserName = Dto.Email?.Trim(),
                 MemberSince = DateTime.UtcNow
             };
 

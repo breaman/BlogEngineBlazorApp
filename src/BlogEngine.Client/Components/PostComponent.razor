@@ -29,8 +29,15 @@
             </div>
             <div>
                 <div class="inputWrapper">
-                    <InputTextArea @bind-Value="Post.Content" class="peer inputField" id="content" placeholder=" "/>
+                    <textarea @bind-value="Post.Content" @bind-value:event="oninput" class="peer inputField" id="content" placeholder=" "></textarea>
                     <label for="content" class="inputLabel">Content</label>
+                </div>
+            </div>
+            <div>
+                <div class="inputWrapper">
+                    <div class="blogPost">
+                        @((MarkupString)_preview)
+                    </div>
                 </div>
             </div>
             <div>

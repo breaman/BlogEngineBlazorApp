@@ -20,7 +20,7 @@ public class Post : FingerPrintEntityBase
             Title = Title,
             Content = Content,
             IsPublished = IsPublished,
-            PostedOn = PostedOn,
+            PostedOn = DateOnly.FromDateTime(PostedOn ?? DateTime.Now),
             Slug = Slug
         };
     }
@@ -30,7 +30,7 @@ public class Post : FingerPrintEntityBase
         Title = dto.Title;
         Content = dto.Content;
         IsPublished = dto.IsPublished;
-        PostedOn = dto.PostedOn;
+        PostedOn = dto.PostedOn?.ToDateTime(new TimeOnly(0, 0, 0));
         Slug = dto.Slug;
         UserId = userId;
     }

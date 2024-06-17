@@ -1,10 +1,13 @@
 using System.Text.RegularExpressions;
+using Markdig;
 
 namespace BlogEngine.Client.Components;
 
 public partial class PostComponent : ComponentBase
 {
     private EditContext? _postContext;
+    
+    private string _preview => Markdown.ToHtml(Post?.Content ?? "");
 
     [Parameter] public PostDto? Post { get; set; }
 
