@@ -7,7 +7,7 @@ public partial class CreatePost : ComponentBase
 
     private readonly PostViewModel _viewModel = new()
     {
-        Post = new PostDto { PostedOn = DateTime.Now }
+        Post = new PostDto { PostedOn = DateOnly.FromDateTime(DateTime.Now) }
     };
 
     [Inject] private HttpClient Client { get; set; }

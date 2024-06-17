@@ -1,0 +1,9 @@
+@page "/blog/{Year:int}/{Month:int}/{Day:int}/{Slug}"
+@using Markdig
+
+<div class="blogPost">
+    <div>@(_post?.Title ?? "")</div>
+    <div class="blogPost">
+        @((MarkupString)(Markdown.ToHtml(_post?.Content ?? "")))
+    </div>
+</div>

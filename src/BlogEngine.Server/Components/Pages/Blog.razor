@@ -1,8 +1,12 @@
 @page "/blog"
-
-<p>Here is where all our posts will go</p>
+@using Markdig
 
 @foreach (var post in _posts)
 {
-    <div>@post.Title</div>
+    <div class="mt-4">
+        <a href="@($"/blog/{post.PostedOn?.Year.ToString().PadLeft(4, '0')}/{post.PostedOn?.Month.ToString().PadLeft(2, '0')}/{post.PostedOn?.Day.ToString().PadLeft(2, '0')}/{post.Slug}")">@post.Title</a>
+        <div class="blogPost">
+            @((MarkupString)(Markdown.ToHtml(post?.Content ?? "")))
+        </div>
+    </div>
 }
