@@ -5,6 +5,7 @@ using BlogEngine.Server.Apis;
 using BlogEngine.Server.Components;
 using BlogEngine.Server.Components.Auth;
 using BlogEngine.Server.Components.Emails;
+using BlogEngine.Server.Models;
 using BlogEngine.Shared.DTOs;
 using FluentValidation;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -83,6 +84,8 @@ try
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
     builder.Services.AddSingleton<IEnhancedEmailSender<User>, IdentityNoOpEmailSender>();
+    
+    builder.Services.Configure<BlogOptions>(builder.Configuration.GetSection("BlogOptions"));
     // End application stuff
 
     // Add FluentValidation stuff

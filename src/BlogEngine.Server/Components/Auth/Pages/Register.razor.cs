@@ -3,10 +3,12 @@ using System.Text.Encodings.Web;
 using Blazored.FluentValidation;
 using BlogEngine.Data.Models;
 using BlogEngine.Server.Components.Emails;
+using BlogEngine.Server.Models;
 using BlogEngine.Shared.DTOs;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Options;
 using SharedConstants = BlogEngine.Shared.Models.Constants;
 
 namespace BlogEngine.Server.Components.Auth.Pages;
@@ -16,9 +18,9 @@ public partial class Register : ComponentBase
     private FluentValidationValidator _fluentValidationValidator;
     private List<IdentityError>? _identityErrors = new();
 
-    [SupplyParameterFromForm] private RegisterDto Dto { get; } = new();
+    [SupplyParameterFromForm] private RegisterDto Dto { get; set; } = new();
 
-    [SupplyParameterFromQuery] private string? ReturnUrl { get; }
+    [SupplyParameterFromQuery] private string? ReturnUrl { get; set; }
 
     [Inject] protected UserManager<User>? UserManager { get; set; }
 
@@ -31,6 +33,8 @@ public partial class Register : ComponentBase
     [Inject] protected IEnhancedEmailSender<User> EmailSender { get; set; }
 
     [Inject] internal IdentityRedirectManager RedirectManager { get; set; }
+    
+    [Inject] internal IOptions<BlogOptions> BlogOptions { get; set; }
 
     private string? Message => _identityErrors is null
         ? null
@@ -40,7 +44,7 @@ public partial class Register : ComponentBase
     {
         _identityErrors = new List<IdentityError>();
         
-        if (Dto.Email?.Trim() != "mike@stokesbary.me")
+        if (Dto.Email?.Trim() != BlogOptions.Value.ValidUser)
         {
             Logger.LogError("User is not in the approved list of users");
             _identityErrors.Add(new IdentityError()
