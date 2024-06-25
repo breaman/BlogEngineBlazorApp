@@ -13,9 +13,9 @@ public partial class RegistrationConfirmation : ComponentBase
 
     [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
 
-    [SupplyParameterFromQuery] private string? Email { get; }
+    [SupplyParameterFromQuery] private string? Email { get; set; }
 
-    [SupplyParameterFromQuery] private string? ReturnUrl { get; }
+    [SupplyParameterFromQuery] private string? ReturnUrl { get; set; }
 
     [Inject] private IdentityRedirectManager RedirectManager { get; set; }
     [Inject] private UserManager<User> UserManager { get; set; }
