@@ -7,12 +7,12 @@
 <EditForm Model="Dto" method="post" OnSubmit="LoginUser" FormName="login">
     <FluentValidationValidator @ref="_fluentValidationValidator" DisableAssemblyScanning="true"/>
     <ValidationSummary class="text-sm text-red-500 px-8" role="alert"/>
-    <div class="inputWrapper">
-        <InputText id="email" @bind-Value="Dto.Email" class="peer inputField" autocomplete="username" aria-required="true" placeholder=" "/>
-        <label for="email" class="inputLabel">Email</label>
+    <div class="field label border small-round">
+        <InputText @bind-Value="Dto.Email" id="email" autocomplete="username" placeholder=" " />
+        <label for="email">Email</label>
     </div>
-    <div class="inputWrapper">
-        <InputText id="password" type="password" @bind-Value="Dto.Password" class="peer inputField" autocomplete="current-password" aria-required="true" placeholder=" "/>
+    <div class="field label border small-round">
+        <InputText id="password" type="password" @bind-Value="Dto.Password" autocomplete="password" aria-required="true" placeholder=" "/>
         <label for="password" class="inputLabel">Password</label>
     </div>
     <div>

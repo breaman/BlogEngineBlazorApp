@@ -14,6 +14,16 @@
       <_ContentIncludedByDefault Remove="Components\Pages\Admin\Admin.razor" />
       <_ContentIncludedByDefault Remove="Components\Pages\Admin\ViewPosts.razor" />
       <_ContentIncludedByDefault Remove="Components\Pages\Admin\_Imports.razor" />
+      <_ContentIncludedByDefault Remove="publish\web.config" />
+      <_ContentIncludedByDefault Remove="publish\appsettings.Development.json" />
+      <_ContentIncludedByDefault Remove="publish\appsettings.json" />
+      <_ContentIncludedByDefault Remove="publish\BlazorDebugProxy\BrowserDebugHost.runtimeconfig.json" />
+      <_ContentIncludedByDefault Remove="publish\BlogEngine.Server.deps.json" />
+      <_ContentIncludedByDefault Remove="publish\BlogEngine.Server.runtimeconfig.json" />
+      <_ContentIncludedByDefault Remove="publish\BlogEngine.Server.staticwebassets.endpoints.json" />
+      <_ContentIncludedByDefault Remove="publish\package-lock.json" />
+      <_ContentIncludedByDefault Remove="publish\package.json" />
+      <_ContentIncludedByDefault Remove="publish\wwwroot\_framework\blazor.boot.json" />
     </ItemGroup>
 
 </Project>

@@ -1,23 +1,24 @@
 @using Microsoft.AspNetCore.Components.Authorization
-<nav>
-    <div class="mx-4 uppercase text-slate-500 my-2 font-bold">
-        <div class="hidden md:block w-full" id="navbar-default">
-            <NavLink href="/">Home</NavLink>
-            <NavLink href="/blog" class="ml-4">Blog</NavLink>
+<header class="l">
+    <nav>
+        <h6>
+            <NavLink href="/">Michael Stokesbary</NavLink>
+        </h6>
+        <nav class="max right-align">
+            <NavLink href="/blog">Blog</NavLink>
             <AuthorizeView>
                 <Authorized>
-                    @* <NavLink class="ml-4" href="/transactions">My Transactions</NavLink> *@
                     <AuthorizeView Roles="@SharedConstants.Admin" Context="adminContext">
                         <Authorized>
-                            <NavLink class="ml-4" href="/admin">Admin</NavLink>
+                            <NavLink href="/admin">Admin</NavLink>
                         </Authorized>
                     </AuthorizeView>
-                    <form action="/Account/Logout" method="post" class="inline ml-4">
+                    <form action="/Account/Logout" method="post" id="logoutForm" class="center-align">
                         <AntiforgeryToken/>
                         <input type="hidden" name="ReturnUrl" value="@_currentUrl"/>
-                        <button type="submit" class="uppercase">
+                        <a onClick="(() => { var logoutForm = document.getElementById('logoutForm'); logoutForm.submit(); })()">
                             Log Off
-                        </button>
+                        </a>
                     </form>
                 </Authorized>
                 <NotAuthorized>
@@ -25,6 +26,34 @@
                     @* <NavLink class="ml-4" href="/account/login">Log in</NavLink> *@
                 </NotAuthorized>
             </AuthorizeView>
-        </div>
-    </div>
-</nav>
+        </nav>
+    </nav>
+</header>
+<header class="s m">
+    <h6 class="center-align top-padding">
+        <NavLink href="/">Michael Stokesbary</NavLink>
+    </h6>
+    <nav class="no-margin center-align">
+        <NavLink href="/blog">Blog</NavLink>
+        <AuthorizeView>
+            <Authorized>
+                <AuthorizeView Roles="@SharedConstants.Admin" Context="adminContext">
+                    <Authorized>
+                        <NavLink href="/admin">Admin</NavLink>
+                    </Authorized>
+                </AuthorizeView>
+                <form action="/Account/Logout" method="post" id="logoutForm" class="center-align">
+                    <AntiforgeryToken/>
+                    <input type="hidden" name="ReturnUrl" value="@_currentUrl"/>
+                    <a onClick="(() => { var logoutForm = document.getElementById('logoutForm'); logoutForm.submit(); })()">
+                        Log Off
+                    </a>
+                </form>
+            </Authorized>
+            <NotAuthorized>
+                @* <NavLink href="/account/register">Register</NavLink> *@
+                @* <NavLink class="ml-4" href="/account/login">Log in</NavLink> *@
+            </NotAuthorized>
+        </AuthorizeView>
+    </nav>
+</header>

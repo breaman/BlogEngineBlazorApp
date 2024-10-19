@@ -10,13 +10,10 @@
     <ValidationSummary class="text-sm text-red-500 px-8" role="alert"/>
     <PostComponent Post="_viewModel.Post"/>
     <div>
-        <button type="submit" class="bg-slate-500 text-white h-10 px-4 mt-2 rounded-xl @(_isProcessing ? "cursor-not-allowed" : "")" disabled="@_isProcessing">
-            <svg class="animate-spin -ml-1 mr-1 h-5 w-5 text-white inline @(_isProcessing ? "" : "hidden")" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            Save Post
+        <button type="submit" disabled="@_isProcessing">
+            <progress class="circle small white-text" style="display: @(_isProcessing ? "block" : "none")"></progress>
+            <span>Save Post</span>
         </button>
-        <a href="/admin/posts" class="bg-rose-500 text-white inline-block leading-10 h-10 ml-4 px-4 mt-2 rounded-xl">Cancel</a>
+        <a href="/admin/posts" class="button secondary">Cancel</a>
     </div>
 </EditForm>

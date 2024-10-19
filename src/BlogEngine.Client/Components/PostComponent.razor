@@ -6,46 +6,38 @@
     else
     {
         <EditForm EditContext="_postContext" FormName="postComponent">
-            <div>
-                <div class="inputWrapper">
-                    <InputText Value="@Post.Title" ValueExpression="() => Post.Title" ValueChanged="@((string? title) => UpdateSlug(title))" class="peer inputField" id="title" placeholder=" "/>
-                    <label for="title" class="inputLabel">Title</label>
-                </div>
+            <div class="field label border small-round">
+                <InputText Value="@Post.Title" ValueExpression="() => Post.Title" ValueChanged="@((string? title) => UpdateSlug(title))" id="title" placeholder=" "/>
+                <label for="title">Title</label>
             </div>
-            <div class="flex">
-                <div class="inputWrapper flex">
-                    <InputText @bind-Value="Post.Slug" class="peer inputField" id="slug" placeholder=" "/>
-                    <label for="slug" class="inputLabel">Slug</label>
-                </div>
-                <div class="flex">
+            <div class="field">
+                <div class="row no-padding">
+                    <div class="max">
+                        <div class="field label border small-round">
+                            <InputText @bind-Value="Post.Slug" id="slug" placeholder=" "/>
+                            <label for="slug">Slug</label>
+                        </div>
+                    </div>
                     <button type="button" class="text-nowrap" @onclick="ReplaceSlug">Replace Slug</button>
                 </div>
             </div>
-            <div>
-                <div class="inputWrapper">
-                    <InputDate @bind-Value="Post.PostedOn" class="peer inputField" id="postedOn" placeholder=" "/>
-                    <label for="postedOn" class="inputLabel">Posted On</label>
+            <div class="field label border small-round">
+                <InputDate @bind-Value="Post.PostedOn" id="postedOn" placeholder=" "/>
+                <label for="postedOn">Posted On</label>
+            </div>
+            <div class="field textarea label border small-round">
+                <textarea @bind-value="Post.Content" @bind-value:event="oninput" id="content" placeholder=" "></textarea>
+                <label for="content">Content</label>
+            </div>
+            <div class="field label border small-round">
+                <div class="blogPost">
+                    @((MarkupString)_preview)
                 </div>
             </div>
-            <div>
-                <div class="inputWrapper">
-                    <textarea @bind-value="Post.Content" @bind-value:event="oninput" class="peer inputField" id="content" placeholder=" "></textarea>
-                    <label for="content" class="inputLabel">Content</label>
-                </div>
-            </div>
-            <div>
-                <div class="inputWrapper">
-                    <div class="blogPost">
-                        @((MarkupString)_preview)
-                    </div>
-                </div>
-            </div>
-            <div>
-                <div class="inputWrapper">
-                    <InputCheckbox @bind-Value="Post.IsPublished" id="published" placeholder=" "/>
-                    <label for="published">Is Published</label>
-                </div>
-            </div>
+            <label class="checkbox">
+                <InputCheckbox @bind-Value="Post.IsPublished" id="published" placeholder=" "/>
+                <span for="published">Is Published</span>
+            </label>
         </EditForm>
     }
 </div>
